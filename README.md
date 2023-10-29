@@ -4,13 +4,9 @@ Created as a project for University.
 
 Work in progress...
 # TO DO:
-- Get familiar with original 2048 game mechanics
-- Give SFML doc a read
-- Find necessary pictures for the tiles and the board
-- Setup and display the board
-- Create the UI
-- Craete an object to represent tiles
-- Setup starting position (2 tiles spawn on board)
-- Handle tiles moving and merging
-- Handle victory and defeat cases
-- Count the points and display them
+- [x] 30.10.2023 - Zapoznanie się z mechanikami gry 2048, przygotowanie środowiska pod pracę, zapoznanie się z dokumentacją SFML, znalezienie odpowiedniej grafiki
+- [] 13.11.2023 - Utworzenie i wyświetlenie planszy
+- [] 27.11.2023 - Utworzenie obiektu reprezentującego płytki, ustawienie pozycji startowej (2 płytki na planszy), poruszanie się i łączenie płytek
+- [] 11.12.2023 - Zwycięstwo i przegrana
+- [] 08.01.2023 - Liczenie punktów, test funkcjonalności.
+- [] 22.01.2023 - Oddanie projektu
