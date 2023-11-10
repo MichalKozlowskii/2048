@@ -5,7 +5,7 @@ Created as a project for University.
 Work in progress...
 # TO DO:
 - [x] 30.10.2023 - Zapoznanie się z mechanikami gry 2048, przygotowanie środowiska pod pracę, zapoznanie się z dokumentacją SFML, znalezienie odpowiedniej grafiki
-- [ ] 13.11.2023 - Utworzenie i wyświetlenie planszy
+- [x] 13.11.2023 - Utworzenie i wyświetlenie planszy
 - [ ] 27.11.2023 - Utworzenie obiektu reprezentującego płytki, ustawienie pozycji startowej (2 płytki na planszy), poruszanie się i łączenie płytek
 - [ ] 11.12.2023 - Zwycięstwo i przegrana, liczenie punktów 
 - [ ] 08.01.2023 - Test funkcjonalności, ewentualne poprawki
