@@ -3,7 +3,8 @@
 
 class Node {
 private:
-	int m_x, m_y, m_state, m_posX, m_posY;
+	int m_x, m_y, m_state;
+	float m_posX, m_posY;
 	bool m_wasSpawned = false;
 public:
 	Node(int x, int y, int state);

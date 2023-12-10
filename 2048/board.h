@@ -22,6 +22,11 @@ private:
 	void spawnTile();
 	void refresh();
 	void move(Direction dir);
+	bool isAbleToMove();
+	bool hasWon();
+	bool hasLost();
+	void drawWinScreen();
+	void drawLooseScreen();
 public:
 	Board();
 };

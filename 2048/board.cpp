@@ -1,4 +1,4 @@
-#include "board.h"
+ï»¿#include "board.h"
 #include <iostream>
 
 Board::Board() {
@@ -70,16 +70,69 @@ void Board::drawUI() {
     m_window.draw(title);
 }
 
+void Board::drawWinScreen() {
+    sf::RectangleShape winFrame(sf::Vector2f(580, 580));
+    winFrame.setPosition(10, 115);
+    winFrame.setFillColor(sf::Color(187, 173, 160, 215));
+    m_window.draw(winFrame);
+
+    sf::Font font;
+    if (!font.loadFromFile("digital-7.ttf")) {
+        std::cout << "nie udalo sie zaladowac czcionki";
+    }
+
+    sf::Text winText;
+    winText.setString("GRATULACJE, WYGRALES!");
+    winText.setPosition(10, 300);
+    winText.setCharacterSize(64);
+    winText.setFont(font);
+    m_window.draw(winText);
+
+    sf::Text instruction;
+    instruction.setString("(kliknij esc, aby wyjsc)");
+    instruction.setPosition(150, 380);
+    instruction.setCharacterSize(32);
+    instruction.setFont(font);
+    m_window.draw(instruction);
+}
+
+void Board::drawLooseScreen() {
+    sf::RectangleShape lFrame(sf::Vector2f(580, 580));
+    lFrame.setPosition(10, 115);
+    lFrame.setFillColor(sf::Color(187, 173, 160, 215));
+    m_window.draw(lFrame);
+
+    sf::Font font;
+    if (!font.loadFromFile("digital-7.ttf")) {
+        std::cout << "nie udalo sie zaladowac czcionki";
+    }
+
+    sf::Text lText;
+    lText.setString("Przegrales!");
+    lText.setPosition(150, 300);
+    lText.setCharacterSize(64);
+    lText.setFont(font);
+    m_window.draw(lText);
+
+    sf::Text instruction;
+    instruction.setString("(kliknij esc, aby wyjsc)");
+    instruction.setPosition(150, 380);
+    instruction.setCharacterSize(32);
+    instruction.setFont(font);
+    m_window.draw(instruction);
+}
+
+
 void Board::captureKeyboardInput() {
     sf::Event event;
     sf::Keyboard keyboard;
-    while (m_window.isOpen()) {
+    while (m_window.isOpen()) { 
         while (m_window.pollEvent(event)) {
 
             if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
                 m_window.close();
             }
-            if (m_canMove) {
+            if (m_canMove && !hasLost() && !hasWon()) {
                 if (keyboard.isKeyPressed(keyboard.W) || keyboard.isKeyPressed(keyboard.Up)) {
                     move(UP);
                 }
@@ -102,39 +155,39 @@ void Board::move(Direction dir) {
     m_canMove = false;
     bool wasMoveMade = false;
 
-    for (int counter = 3; counter >= 0; counter--) { // iteracja 4 razy, poniewa¿ plansza jest 4x4
-        std::vector<Node> currRow; // tworzymy vector, w którym bêd¹ wszystkie komórki danego rzêdu/kolumny
+    for (int counter = 3; counter >= 0; counter--) { // iteracja 4 razy, poniewaÅ¼ plansza jest 4x4
+        std::vector<Node> currRow; // tworzymy vector, w ktÃ³rym bÄ™dÄ… wszystkie komÃ³rki danego rzÄ™du/kolumny
         for (std::list<Node>::iterator it = m_grid.begin(); it != m_grid.end(); it++) {
             if (dir == RIGHT || dir == LEFT) {
                 if (it->getY() == counter + 1) {
                     Node currNode(it->getX(), it->getY(), it->getState());
-                    currRow.push_back(currNode); // wpisujemy do vectora wszystkie komórki z danego rzêdu
+                    currRow.push_back(currNode); // wpisujemy do vectora wszystkie komÃ³rki z danego rzÄ™du
                 }
             }
             else if (dir == UP || dir == DOWN) {
                 if (it->getX() == counter + 1) {
                     Node currNode(it->getX(), it->getY(), it->getState());
-                    currRow.push_back(currNode); // wpisujemy do vectora wszystkie komórki z danej kolumny
+                    currRow.push_back(currNode); // wpisujemy do vectora wszystkie komÃ³rki z danej kolumny
                 }
             }
         }
-        bool wasMerged = false; // w jednym ruchu mo¿emy po³¹czyæ dwie p³ytki ze sob¹ tylko raz, wiêc deklarujemy zmienn¹ bool
+        bool wasMerged = false; // w jednym ruchu moÅ¼emy poÅ‚Ä…czyÄ‡ dwie pÅ‚ytki ze sobÄ… tylko raz, wiÄ™c deklarujemy zmiennÄ… bool
         if (dir == RIGHT || dir == DOWN) {
             for (int i = 2; i >= 0; i--) { // iteracja od 3. pola do 1. pola
                 for (int j = i; j < 3; j++) { // iteracja od numeru aktualnego pola do pola numer 3
-                    if (currRow[j].getState() != 0) { // jeœli aktualnie rozpatrywana komórka ma wartoœæ
+                    if (currRow[j].getState() != 0) { // jeÅ›li aktualnie rozpatrywana komÃ³rka ma wartoÅ›Ä‡
                         if (currRow[j].getState() == currRow[j + 1].getState() && !wasMerged) {
-                            // jeœli nastêpna komórka ma wartoœæ tak¹ jak aktualna i ¿adne po³¹czenie nie zosta³o jeszcze wykonane w tym rzêdzie
-                            currRow[j + 1].setState(currRow[j].getState() * 2); // podwajamy wartoœæ nastêpnej komórki
-                            currRow[j].setState(0); // ustawiamy wartoœæ aktualnej na 0
-                            // w ten sposób "³¹czymy p³ytki"
+                            // jeÅ›li nastÄ™pna komÃ³rka ma wartoÅ›Ä‡ takÄ… jak aktualna i Å¼adne poÅ‚Ä…czenie nie zostaÅ‚o jeszcze wykonane w tym rzÄ™dzie
+                            currRow[j + 1].setState(currRow[j].getState() * 2); // podwajamy wartoÅ›Ä‡ nastÄ™pnej komÃ³rki
+                            currRow[j].setState(0); // ustawiamy wartoÅ›Ä‡ aktualnej na 0
+                            // w ten sposÃ³b "Å‚Ä…czymy pÅ‚ytki"
                             wasMerged = true;
                             wasMoveMade = true;
                         }
-                        if (currRow[j + 1].getState() == 0) { // jeœli nastêpna komórka nie ma wartoœci to
-                            currRow[j + 1].setState(currRow[j].getState()); // ustawiamy wartoœæ nastêpnej komórki na wartoœæ aktualnej komórki
-                            currRow[j].setState(0); // ustawiamy wartoœæ aktualnej komórki na 0
-                            // w ten sposób p³ytka siê "przesuwa"
+                        if (currRow[j + 1].getState() == 0) { // jeÅ›li nastÄ™pna komÃ³rka nie ma wartoÅ›ci to
+                            currRow[j + 1].setState(currRow[j].getState()); // ustawiamy wartoÅ›Ä‡ nastÄ™pnej komÃ³rki na wartoÅ›Ä‡ aktualnej komÃ³rki
+                            currRow[j].setState(0); // ustawiamy wartoÅ›Ä‡ aktualnej komÃ³rki na 0
+                            // w ten sposÃ³b pÅ‚ytka siÄ™ "przesuwa"
                             wasMoveMade = true;
                         }
                     }
@@ -161,7 +214,7 @@ void Board::move(Direction dir) {
             }
         }
         for (std::vector<Node>::iterator it = currRow.begin(); it != currRow.end(); it++) {
-            it->insert(m_grid, it->getX(), it->getY(), it->getState()); // komórki z wektora aktualnego rzêdu/kolumny wpisujemy do listy grid
+            it->insert(m_grid, it->getX(), it->getY(), it->getState()); // komÃ³rki z wektora aktualnego rzÄ™du/kolumny wpisujemy do listy grid
             // "wrzucamy" je na plansze
         }
     }
@@ -171,16 +224,83 @@ void Board::move(Direction dir) {
         sf::Time elapsed = clock.getElapsedTime();
 
         if (elapsed.asMilliseconds() >= 200) {
-            m_canMove = true; // cooldown przed nastêpnym ruchem
+            m_canMove = true; // cooldown przed nastÄ™pnym ruchem
         }
     }
 
-    if (wasMoveMade) {
-        this->spawnTile(); // jeœli uda³o nam siê wykonaæ ruch to spawnujemy now¹ p³ytkê
+    if (wasMoveMade && !hasWon() && !hasLost()) {
+        spawnTile(); // jeÅ›li udaÅ‚o nam siÄ™ wykonaÄ‡ ruch to spawnujemy nowÄ… pÅ‚ytkÄ™
     }
-    this->refresh(); // update planszy
+
+    refresh(); // update planszy
 }
 
+bool Board::isAbleToMove() {
+    for (int iteration = 0; iteration < 2; iteration++) { // w pierwszej iteracji sprawdzamy czy moÅ¼na siÄ™ ruszyÄ‡ poziomo, w drugiej czy moÅ¼na pionowo
+        for (int counter = 3; counter >= 0; counter--) { // iteracja 4 razy, poniewaÅ¼ plansza jest 4x4
+            std::vector<Node> currRow; // tworzymy vector, w ktÃ³rym bÄ™dÄ… wszystkie komÃ³rki danego rzÄ™du/kolumny
+            for (std::list<Node>::iterator it = m_grid.begin(); it != m_grid.end(); it++) {
+                if (iteration == 0) {
+                    if (it->getY() == counter + 1) {
+                        Node currNode(it->getX(), it->getY(), it->getState());
+                        currRow.push_back(currNode); // wpisujemy do vectora wszystkie komÃ³rki z danego rzÄ™du
+                    }
+                }
+                else if (iteration == 1) {
+                    if (it->getX() == counter + 1) {
+                        Node currNode(it->getX(), it->getY(), it->getState());
+                        currRow.push_back(currNode); // wpisujemy do vectora wszystkie komÃ³rki z danej kolumny
+                    }
+                }
+            }
+            for (int i = 2; i >= 0; i--) { // iteracja od 3. pola dla ruchu w prawo/dol
+                for (int j = i; j < 3; j++) { // iteracja od numeru aktualnego pola do pola numer 3
+                    if (currRow[j].getState() != 0) { // jesli komÃ³rka ma wartoÅ›Ä‡
+                        if (currRow[j].getState() == currRow[j + 1].getState() || currRow[j + 1].getState() == 0) {
+                            // jeÅ›li aktualna komÃ³rka ma wartoÅ›Ä‡ takÄ… samÄ… jak nastÄ™pna, lub nastÄ™pna komÃ³rka nie ma wartoÅ›ci (jest pusta)
+                            return true; // to moÅ¼na wykonaÄ‡ ruch
+                        }
+                    }
+                }
+            }
+            for (int i = 1; i < 4; i++) { // iteracja od 2. pola dla ruchu w lewo/gora
+                for (int j = i; j > 0; j--) { // iteracja od numeru aktualnego pola do pola numer 1
+                    if (currRow[j].getState() != 0) { // jesli komÃ³rka ma wartoÅ›Ä‡
+                        if (currRow[j].getState() == currRow[j - 1].getState() || currRow[j - 1].getState() == 0) {
+                            // jeÅ›li aktualna komÃ³rka ma wartoÅ›Ä‡ takÄ… samÄ… jak nastÄ™pna, lub nastÄ™pna komÃ³rka nie ma wartoÅ›ci (jest pusta)
+                            return true; // to moÅ¼na wykonaÄ‡ ruch
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool Board::hasWon() {
+    for (std::list<Node>::iterator it = m_grid.begin(); it != m_grid.end(); it++) {
+        if (it->getState() == 2048) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Board::hasLost() {
+    for (std::list<Node>::iterator it = m_grid.begin(); it != m_grid.end(); it++) {
+        if (it->getState() == 0) {
+            return false;
+        }
+    }
+
+    if (isAbleToMove()) {
+        return false;
+    }
+
+    return true;
+}
 
 void Board::setup() {
     fillGrid();
@@ -217,6 +337,14 @@ void Board::refresh() {
             }
             m_window.draw(tile);
         }
+    }
+
+    if (hasWon()) {
+        drawWinScreen();
+    }
+
+    if (hasLost()) {
+        drawLooseScreen();
     }
 
     m_window.display();
