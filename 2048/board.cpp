@@ -61,6 +61,21 @@ void Board::drawUI() {
         std::cout << "nie udalo sie zaladowac czcionki";
     }
 
+    sf::Text scoreText;
+    scoreText.setString("Wynik");
+    scoreText.setPosition(51, 5);
+    scoreText.setCharacterSize(32);
+    scoreText.setFont(font);
+    m_window.draw(scoreText);
+
+    sf::Text score;
+    score.setString(std::to_string(m_points));
+    score.setCharacterSize(38);
+    sf::FloatRect bounds = score.getLocalBounds();
+    score.setPosition(68 - bounds.width, 41);
+    score.setFont(font);
+    m_window.draw(score);
+
     sf::Text title;
     title.setString("2048");
     title.setCharacterSize(80);
@@ -150,6 +165,9 @@ void Board::captureKeyboardInput() {
     }
 }
 
+void Board::addPoints(int amount) {
+    m_points += amount;
+}
 
 void Board::move(Direction dir) {
     m_canMove = false;
@@ -178,6 +196,8 @@ void Board::move(Direction dir) {
                     if (currRow[j].getState() != 0) { // jeśli aktualnie rozpatrywana komórka ma wartość
                         if (currRow[j].getState() == currRow[j + 1].getState() && !wasMerged) {
                             // jeśli następna komórka ma wartość taką jak aktualna i żadne połączenie nie zostało jeszcze wykonane w tym rzędzie
+                            addPoints(currRow[j].getState() * 2);
+
                             currRow[j + 1].setState(currRow[j].getState() * 2); // podwajamy wartość następnej komórki
                             currRow[j].setState(0); // ustawiamy wartość aktualnej na 0
                             // w ten sposób "łączymy płytki"
@@ -199,6 +219,8 @@ void Board::move(Direction dir) {
                 for (int j = i; j > 0; j--) { // iteracja od numeru aktualnego pola do pola numer 1
                     if (currRow[j].getState() != 0) {
                         if (currRow[j].getState() == currRow[j - 1].getState() && !wasMerged) {
+                            addPoints(currRow[j].getState() * 2);
+
                             currRow[j - 1].setState(currRow[j].getState() * 2);
                             currRow[j].setState(0);
                             wasMerged = true;
