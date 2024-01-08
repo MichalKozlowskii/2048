@@ -66,14 +66,16 @@ void Board::drawUI() {
     scoreText.setPosition(51, 5);
     scoreText.setCharacterSize(32);
     scoreText.setFont(font);
+    scoreText.setFillColor(sf::Color(0, 0, 0));
     m_window.draw(scoreText);
 
     sf::Text score;
     score.setString(std::to_string(m_points));
     score.setCharacterSize(38);
-    sf::FloatRect bounds = score.getLocalBounds();
-    score.setPosition(68 - bounds.width, 41);
     score.setFont(font);
+    score.setFillColor(sf::Color(0, 0, 0));
+    sf::FloatRect bounds = score.getLocalBounds();
+    score.setPosition(80 - bounds.width / 2, 41);
     m_window.draw(score);
 
     sf::Text title;
