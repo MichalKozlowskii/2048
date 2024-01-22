@@ -2,7 +2,6 @@
 C++ implementation of 2048 game made with SFML library.
 Created as a project for University.
 
-Work in progress...
 # TO DO:
 - [x] 30.10.2023 - Zapoznanie się z mechanikami gry 2048, przygotowanie środowiska pod pracę, zapoznanie się z dokumentacją SFML, znalezienie odpowiedniej grafiki
 - [x] 13.11.2023 - Utworzenie i wyświetlenie planszy
