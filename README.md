@@ -10,3 +10,6 @@ Work in progress...
 - [x] 11.12.2023 - Zwycięstwo i przegrana, liczenie punktów 
 - [x] 08.01.2023 - Test funkcjonalności, ewentualne poprawki
 - [ ] 22.01.2023 - Oddanie projektu
+
+# Download .exe
+[Download latest version from google drive](https://drive.google.com/file/d/1zrL-LMyGJyh_uywCVGlxZdMbla6t-hRB/view?usp=sharing)
