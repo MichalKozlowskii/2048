@@ -10,5 +10,5 @@ Created as a project for University.
 - [x] 08.01.2023 - Test funkcjonalności, ewentualne poprawki
 - [ ] 22.01.2023 - Oddanie projektu
 
-# Download .exe
+# Download for Windows
 [Download latest version from google drive](https://drive.google.com/file/d/1zrL-LMyGJyh_uywCVGlxZdMbla6t-hRB/view?usp=sharing)
